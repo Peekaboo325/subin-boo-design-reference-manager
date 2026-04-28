@@ -19,4 +19,4 @@ No user data is stored on external servers. Authentication tokens are used tempo
 This application does not share any data with third parties.
 
 ## Contact
-subinboo@email.com
+sbboo@donga.ac.kr
