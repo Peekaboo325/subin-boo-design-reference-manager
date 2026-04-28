@@ -180,7 +180,7 @@ async function analyzeWithGemini(base64, mediaType, apiKey) {
 
 async function saveToDrive(title, keywords, base64Full, mimeType) {
   const base64 = base64Full.split(",")[1];
-  const response = await fetch(GAS_WEBHOOK, {
+  const response = await fetch("/api/save", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, keywords, imageBase64: base64, mimeType })
