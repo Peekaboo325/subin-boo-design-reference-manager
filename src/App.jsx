@@ -275,7 +275,6 @@ export default function App() {
   };
 
   const handleExtractAll = async () => {
-    if (selectedModel === "gemini-flash" && !geminiKey.trim()) { setShowSettings(true); return; }
     const pending = files.filter(f => f.status === "pending");
     if (!pending.length) return;
     setLoading(true);
@@ -285,7 +284,7 @@ export default function App() {
         const base64 = item.preview.split(",")[1];
         const text = selectedModel === "haiku"
           ? await analyzeWithClaude(base64, item.file.type)
-          : await analyzeWithGemini(base64, item.file.type, geminiKey);
+          : await analyzeWithGemini(base64, item.file.type);
         const result = parseResult(text);
         setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "done", result } : f));
         if (result.newKeywords.length > 0) setAllNewKeywords(prev => [...new Set([...prev, ...result.newKeywords])]);
