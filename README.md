@@ -1,16 +1,22 @@
-# React + Vite
+# Privacy Policy for Design Reference Manager
+### Subin Boo | subin-boo-design-reference-manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Last updated: April 28, 2026
 
-Currently, two official plugins are available:
+## Overview
+Design Reference Manager is a personal tool developed for individual use to collect and manage design reference images with keyword tagging via the Pinterest API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Data Collection
+This application does not collect, store, or share any personal data from users or third parties. All data processed remains within the user's own Pinterest account.
 
-## React Compiler
+## Pinterest API Usage
+This application uses the Pinterest API solely to create pins and read board information within the authenticated user's own account. No data is transmitted to external servers beyond Pinterest's official API endpoints.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Data Storage
+No user data is stored on external servers. Authentication tokens are used temporarily within the application session only.
 
-## Expanding the ESLint configuration
+## Third-Party Sharing
+This application does not share any data with third parties.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Contact
+subinboo@email.com
