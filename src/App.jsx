@@ -141,17 +141,19 @@ function copyText(text) {
 
 async function analyzeWithClaude(base64, mediaType, apiKey) {
   const headers = { "Content-Type": "application/json" };
-  if (apiKey) headers["x-api-key"] = apiKey;
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST", headers,
-    body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001", max_tokens: 1000, system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: [
-        { type: "image", source: { type: "base64", media_type: mediaType, data: base64 } },
-        { type: "text", text: "이 이미지의 제목과 키워드를 뽑아줘." }
-      ]}]
-    })
-  });
+  const response = await fetch("/api/analyze", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 1000,
+    system: SYSTEM_PROMPT,
+    messages: [{ role: "user", content: [
+      { type: "image", source: { type: "base64", media_type: mediaType, data: base64 } },
+      { type: "text", text: "이 이미지의 제목과 키워드를 뽑아줘." }
+    ]}]
+  })
+});
   const data = await response.json();
   if (data.error) throw new Error(data.error.message);
   return data.content?.map(c => c.text || "").join("") || "";
