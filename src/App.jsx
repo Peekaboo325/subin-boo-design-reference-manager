@@ -252,20 +252,6 @@ function EditableField({ value, onChange, multiline, fontSize, fontWeight, color
   );
 }
 
-function KeyInput({ label, value, onChange, placeholder, hint }) {
-  return (
-    <div>
-      <div style={{ color: "#888", fontSize: "11px", fontWeight: "600", marginBottom: "6px" }}>{label}</div>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <input type="password" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
-          style={{ flex: 1, background: "#0f0f0f", border: `1px solid ${value ? "#2a4a2a" : "#222"}`, borderRadius: "6px", color: value ? "#ccc" : "#555", fontSize: "12px", padding: "8px 12px", outline: "none", fontFamily: "inherit" }} />
-        {value && <span style={{ color: "#4caf50", fontSize: "11px", whiteSpace: "nowrap" }}>입력됨 ✓</span>}
-      </div>
-      {hint && <div style={{ color: "#555", fontSize: "11px", marginTop: "4px" }}>{hint}</div>}
-    </div>
-  );
-}
-
 export default function App() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -276,9 +262,6 @@ export default function App() {
   const [showTypoRef, setShowTypoRef] = useState(false);
   const [copiedTypo, setCopiedTypo] = useState(null);
   const [selectedModel, setSelectedModel] = useState("haiku");
-  const [claudeKey, setClaudeKey] = useState("");
-  const [geminiKey, setGeminiKey] = useState("");
-  const [showSettings, setShowSettings] = useState(false);
   const inputRef = useRef();
   const THUMB_HEIGHT = 340;
 
@@ -341,8 +324,6 @@ export default function App() {
             <p style={{ color: "#666", fontSize: "12px", margin: "6px 0 0" }}>이미지 업로드 → 키워드 분석 → 검수 후 저장</p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <button onClick={() => setShowSettings(p => !p)}
-              style={{ background: showSettings ? "#2a2a2a" : "#1a1a1a", border: "1px solid #2a2a2a", color: "#888", borderRadius: "8px", padding: "10px 14px", fontSize: "13px", cursor: "pointer", fontFamily: "inherit" }}>⚙</button>
             <select value={selectedModel} onChange={e => setSelectedModel(e.target.value)}
               style={{ background: "#1e1e1e", border: "1px solid #2a2a2a", color: "#ccc", borderRadius: "8px", padding: "10px 12px", fontSize: "12px", fontFamily: "inherit", cursor: "pointer", outline: "none" }}>
               {MODELS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
@@ -353,15 +334,6 @@ export default function App() {
               </button>
           </div>
         </div>
-
-        {/* 설정 패널 */}
-        {showSettings && (
-          <div style={{ background: "#141414", border: "1px solid #2a2a2a", borderRadius: "10px", padding: "16px", marginBottom: "16px", display: "flex", flexDirection: "column", gap: "14px" }}>
-            <div style={{ color: "#777", fontSize: "11px", fontWeight: "700" }}>API 설정</div>
-            <KeyInput label="Claude API Key" value={claudeKey} onChange={setClaudeKey} placeholder="아티팩트 환경에서는 입력 불필요" hint="독립 앱으로 배포 시에만 입력하세요." />
-            <KeyInput label="Gemini API Key" value={geminiKey} onChange={setGeminiKey} placeholder="AIza..." hint="Gemini Flash 모델 사용 시 필요합니다." />
-          </div>
-        )}
 
         {/* 타이포 참조 패널 */}
         <div style={{ background: "#141414", border: "1px solid #222", borderRadius: "10px", marginBottom: "16px", overflow: "hidden" }}>
