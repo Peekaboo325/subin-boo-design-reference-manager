@@ -261,7 +261,7 @@ export default function App() {
   const [lightbox, setLightbox] = useState(null);
   const [showTypoRef, setShowTypoRef] = useState(false);
   const [copiedTypo, setCopiedTypo] = useState(null);
-  const [selectedModel, setSelectedModel] = useState("haiku");
+  const [selectedModel, setSelectedModel] = useState(() => localStorage.getItem("drm_model") || "haiku");
   const inputRef = useRef();
   const THUMB_HEIGHT = 340;
 
@@ -323,7 +323,7 @@ export default function App() {
             <p style={{ color: "#666", fontSize: "12px", margin: "6px 0 0" }}>이미지 업로드 → 키워드 분석 → 검수 후 저장</p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <select value={selectedModel} onChange={e => setSelectedModel(e.target.value)}
+            <select value={selectedModel}   setSelectedModel(e.target.value); localStorage.setItem("drm_model", e.target.value);}}
               style={{ background: "#1e1e1e", border: "1px solid #2a2a2a", color: "#ccc", borderRadius: "8px", padding: "10px 12px", fontSize: "12px", fontFamily: "inherit", cursor: "pointer", outline: "none" }}>
               {MODELS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
             </select>
