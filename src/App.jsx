@@ -139,7 +139,7 @@ function copyText(text) {
   } catch (e) {}
 }
 
-async function analyzeWithClaude(base64, mediaType, apiKey) {
+async function analyzeWithClaude(base64, mediaType) {
   const headers = { "Content-Type": "application/json" };
   const response = await fetch("/api/analyze", {
   method: "POST",
@@ -285,7 +285,7 @@ export default function App() {
       try {
         const base64 = item.preview.split(",")[1];
         const text = selectedModel === "haiku"
-          ? await analyzeWithClaude(base64, item.file.type, claudeKey || null)
+          ? await analyzeWithClaude(base64, item.file.type)
           : await analyzeWithGemini(base64, item.file.type, geminiKey);
         const result = parseResult(text);
         setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "done", result } : f));
