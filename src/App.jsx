@@ -159,9 +159,8 @@ async function analyzeWithClaude(base64, mediaType) {
   return data.content?.map(c => c.text || "").join("") || "";
 }
 
-async function analyzeWithGemini(base64, mediaType, apiKey) {
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+async function analyzeWithGemini(base64, mediaType) {
+  const response = await fetch("/api/gemini",
     {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
