@@ -141,38 +141,36 @@ function copyText(text) {
 }
 
 async function analyzeWithClaude(base64, mediaType) {
-  const headers = { "Content-Type": "application/json" };
   const response = await fetch("/api/analyze", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    model: "claude-haiku-4-5-20251001",
-    max_tokens: 1000,
-    system: SYSTEM_PROMPT,
-    messages: [{ role: "user", content: [
-      { type: "image", source: { type: "base64", media_type: mediaType, data: base64 } },
-      { type: "text", text: "이 이미지의 제목과 키워드를 뽑아줘." }
-    ]}]
-  })
-});
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1000,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: "user", content: [
+        { type: "image", source: { type: "base64", media_type: mediaType, data: base64 } },
+        { type: "text", text: "이 이미지의 제목과 키워드를 뽑아줘." }
+      ]}]
+    })
+  });
   const data = await response.json();
   if (data.error) throw new Error(data.error.message);
   return data.content?.map(c => c.text || "").join("") || "";
 }
 
 async function analyzeWithGemini(base64, mediaType) {
-  const response = await fetch("/api/gemini",
-    {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-        contents: [{ parts: [
-          { inline_data: { mime_type: mediaType, data: base64 } },
-          { text: "이 이미지의 제목과 키워드를 뽑아줘." }
-        ]}]
-      })
-    }
-  );
+  const response = await fetch("/api/gemini", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents: [{ parts: [
+        { inline_data: { mime_type: mediaType, data: base64 } },
+        { text: "이 이미지의 제목과 키워드를 뽑아줘." }
+      ]}]
+    })
+  });
   const data = await response.json();
   if (data.error) throw new Error(data.error.message);
   return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
@@ -323,12 +321,23 @@ export default function App() {
             <p style={{ color: "#666", fontSize: "12px", margin: "6px 0 0" }}>이미지 업로드 → 키워드 분석 → 검수 후 저장</p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <select value={selectedModel} onChange={e => { setSelectedModel(e.target.value); localStorage.setItem("drm_model", e.target.value); }}
-  style={{ background: "#1e1e1e", border: "1px solid #2a2a2a", color: "#ccc", borderRadius: "8px", padding: "10px 12px", fontSize: "12px", fontFamily: "inherit", cursor: "pointer", outline: "none" }}>
-            <button onClick={handleExtractAll} disabled={loading || pendingCount === 0}
-                style={{ background: loading || pendingCount === 0 ? "#2a2a2a" : "#e60023", color: "#fff", border: "none", borderRadius: "8px", padding: "10px 20px", fontSize: "13px", fontWeight: "600", cursor: loading || pendingCount === 0 ? "not-allowed" : "pointer", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: "8px", opacity: pendingCount === 0 && !loading ? 0.35 : 1 }}>
-                {loading ? "분석 중…" : `${pendingCount}장 분석`}
-              </button>
+            <select
+              value={selectedModel}
+              onChange={e => {
+                setSelectedModel(e.target.value);
+                localStorage.setItem("drm_model", e.target.value);
+              }}
+              style={{ background: "#1e1e1e", border: "1px solid #2a2a2a", color: "#ccc", borderRadius: "8px", padding: "10px 12px", fontSize: "12px", fontFamily: "inherit", cursor: "pointer", outline: "none" }}
+            >
+              {MODELS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+            </select>
+            <button
+              onClick={handleExtractAll}
+              disabled={loading || pendingCount === 0}
+              style={{ background: loading || pendingCount === 0 ? "#2a2a2a" : "#e60023", color: "#fff", border: "none", borderRadius: "8px", padding: "10px 20px", fontSize: "13px", fontWeight: "600", cursor: loading || pendingCount === 0 ? "not-allowed" : "pointer", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: "8px", opacity: pendingCount === 0 && !loading ? 0.35 : 1 }}
+            >
+              {loading ? "분석 중…" : `${pendingCount}장 분석`}
+            </button>
           </div>
         </div>
 
